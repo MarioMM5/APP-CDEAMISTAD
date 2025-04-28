@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cde_amistad/pages/partidosPage.dart';
+import 'package:cde_amistad/pages/inicioPage.dart';
 import 'package:cde_amistad/pages/noticiasPage.dart';
 
 void main() {
@@ -35,7 +36,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _indiceActual = 0;
 
   final List<Widget> _paginas = [
-    Center(child: Text('Inicio')),
+    InicioPage(),
     NoticiasPage(),
     PartidosPage(),
     Center(child: Text('Perfil')),
