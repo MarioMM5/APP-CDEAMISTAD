@@ -1,8 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:cde_amistad/entity/noticiaEntity.dart';
+import 'package:add_2_calendar/add_2_calendar.dart';
+import 'package:intl/intl.dart'; // Para parsear la fecha
 
 class InicioPage extends StatelessWidget {
   const InicioPage({Key? key}) : super(key: key);
+
+  Event buildEvent(String titulo, String lugar, DateTime fecha) {
+    // Ajustamos el final del evento para asegurarnos de que haya una duración.
+    return Event(
+      title: titulo,
+      description: 'Evento de CDE Amistad',
+      location: lugar,
+      startDate: fecha,
+      endDate: fecha.add(const Duration(hours: 1)), // Se asigna una duración de 1 hora
+      iosParams: IOSParams(reminder: Duration(minutes: 15)), // Opcional, para notificación en iOS
+      androidParams: AndroidParams(
+        emailInvites: ['correo@ejemplo.com'], // Puedes agregar correos si lo deseas
+      ),
+    );
+  }
+
+
+  DateTime parseFecha(String fechaTexto) {
+    // Convierte "5 mayo, 18:00h" en DateTime
+    final meses = {
+      'enero': 1,
+      'febrero': 2,
+      'marzo': 3,
+      'abril': 4,
+      'mayo': 5,
+      'junio': 6,
+      'julio': 7,
+      'agosto': 8,
+      'septiembre': 9,
+      'octubre': 10,
+      'noviembre': 11,
+      'diciembre': 12,
+    };
+
+    final partes = fechaTexto.split(',');
+    final fechaPartes = partes[0].trim().split(' ');
+    final horaPartes = partes[1].trim().replaceAll('h', '').split(':');
+
+    final dia = int.parse(fechaPartes[0]);
+    final mes = meses[fechaPartes[1].toLowerCase()]!;
+    final hora = int.parse(horaPartes[0]);
+    final minutos = int.parse(horaPartes[1]);
+
+    final ahora = DateTime.now();
+    return DateTime(ahora.year, mes, dia, hora, minutos);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +101,7 @@ class InicioPage extends StatelessWidget {
 
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: const Size.fromHeight(80),
         child: AppBar(
           flexibleSpace: Container(
             decoration: const BoxDecoration(
@@ -179,45 +227,79 @@ class InicioPage extends StatelessWidget {
                       itemCount: eventosMock.length,
                       itemBuilder: (context, index) {
                         final evento = eventosMock[index];
-                        return Container(
-                          width: 200,
-                          margin: const EdgeInsets.only(right: 12),
-                          decoration: BoxDecoration(
-                            color: Colors.green[100],
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: const [
-                              BoxShadow(
-                                color: Colors.black26,
-                                blurRadius: 6,
-                                offset: Offset(0, 3),
+                        return GestureDetector(
+                          onTap: () {
+                            final fechaEvento = parseFecha(evento['fecha']!);
+                            final event = buildEvent(
+                              evento['titulo']!,
+                              evento['lugar']!,
+                              fechaEvento,
+                            );
+
+                            print("Fecha del evento a añadir: ${event.startDate}");
+
+                            showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                title: const Text('Añadir a calendario'),
+                                content: Text(
+                                    '¿Quieres añadir "${evento['titulo']}" a tu calendario?'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(context),
+                                    child: const Text('Cancelar'),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      Add2Calendar.addEvent2Cal(event);
+                                      Navigator.pop(context);
+                                    },
+                                    child: const Text('Añadir'),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          padding: const EdgeInsets.all(12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Icon(Icons.event,
-                                  size: 30, color: Colors.green),
-                              const SizedBox(height: 8),
-                              Text(
-                                evento['titulo']!,
-                                style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                evento['fecha']!,
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.black87),
-                              ),
-                              Text(
-                                evento['lugar']!,
-                                style: const TextStyle(
-                                    fontSize: 14, color: Colors.black54),
-                              ),
-                            ],
+                            );
+                          },
+                          child: Container(
+                            width: 200,
+                            margin: const EdgeInsets.only(right: 12),
+                            decoration: BoxDecoration(
+                              color: Colors.green[100],
+                              borderRadius: BorderRadius.circular(16),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 6,
+                                  offset: Offset(0, 3),
+                                ),
+                              ],
+                            ),
+                            padding: const EdgeInsets.all(12),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Icon(Icons.event,
+                                    size: 30, color: Colors.green),
+                                const SizedBox(height: 8),
+                                Text(
+                                  evento['titulo']!,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  evento['fecha']!,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.black87),
+                                ),
+                                Text(
+                                  evento['lugar']!,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: Colors.black54),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
