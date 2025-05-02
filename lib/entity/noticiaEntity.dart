@@ -4,12 +4,14 @@ class NoticiaEntity extends StatelessWidget {
   final String titulo;
   final String contenido;
   final String imagen;
+  final DateTime fecha;
 
   const NoticiaEntity({
     Key? key,
     required this.titulo,
     required this.contenido,
     required this.imagen,
+    required this.fecha
   }) : super(key: key);
 
   @override

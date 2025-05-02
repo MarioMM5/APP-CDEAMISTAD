@@ -6,24 +6,30 @@ class InicioPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> noticiasMock = [
+    final List<Map<String, dynamic>> noticiasMock = [
       {
         "titulo": "¡Victoria épica!",
         "descripcion": "El CDE Amistad gana 3-2 en un partido inolvidable.",
-        "contenido": "En un partido lleno de emoción, nuestro equipo logró una victoria histórica gracias al gol de último minuto...",
-        "imagen": "https://picsum.photos/400/200"
+        "contenido":
+        "En un partido lleno de emoción, nuestro equipo logró una victoria histórica gracias al gol de último minuto...",
+        "imagen": "https://picsum.photos/400/200",
+        "fecha": DateTime(2025, 4, 25),
       },
       {
         "titulo": "Nuevos entrenamientos",
         "descripcion": "Inscripciones abiertas para verano.",
-        "contenido": "Desde el 1 de junio comenzamos la preparación para la próxima temporada. Inscríbete ya y forma parte de la familia CDE Amistad.",
-        "imagen": "https://picsum.photos/400/200"
+        "contenido":
+        "Desde el 1 de junio comenzamos la preparación para la próxima temporada. Inscríbete ya y forma parte de la familia CDE Amistad.",
+        "imagen": "https://picsum.photos/400/200",
+        "fecha": DateTime(2025, 4, 20),
       },
       {
         "titulo": "Fiesta del Club",
         "descripcion": "No te pierdas nuestra gran fiesta familiar.",
-        "contenido": "Este sábado a las 18:00h te esperamos en las instalaciones del club para disfrutar juntos de una jornada inolvidable.",
-        "imagen": "https://picsum.photos/400/200"
+        "contenido":
+        "Este sábado a las 18:00h te esperamos en las instalaciones del club para disfrutar juntos de una jornada inolvidable.",
+        "imagen": "https://picsum.photos/400/200",
+        "fecha": DateTime(2025, 4, 18),
       },
     ];
 
@@ -106,7 +112,6 @@ class InicioPage extends StatelessWidget {
             Expanded(
               child: ListView(
                 children: [
-                  // Noticias
                   ...noticiasMock.map((noticia) => GestureDetector(
                     onTap: () {
                       Navigator.push(
@@ -116,6 +121,7 @@ class InicioPage extends StatelessWidget {
                             titulo: noticia['titulo']!,
                             contenido: noticia['contenido']!,
                             imagen: noticia['imagen']!,
+                            fecha: noticia['fecha']!,
                           ),
                         ),
                       );
@@ -138,19 +144,29 @@ class InicioPage extends StatelessWidget {
                         ),
                         title: Text(
                           noticia['titulo']!,
-                          style:
-                          const TextStyle(fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold),
                         ),
-                        subtitle: Text(noticia['descripcion']!),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(noticia['descripcion']!),
+                            const SizedBox(height: 4),
+                            Text(
+                              '📅 ${noticia['fecha'].day}/${noticia['fecha'].month}/${noticia['fecha'].year}',
+                              style: const TextStyle(
+                                  fontSize: 12,
+                                  color: Colors.black54,
+                                  fontStyle: FontStyle.italic),
+                            ),
+                          ],
+                        ),
                         trailing:
                         const Icon(Icons.arrow_forward_ios, size: 16),
                       ),
                     ),
                   )),
-
                   const SizedBox(height: 30),
-
-                  // Eventos Próximos
                   const Text(
                     'Eventos próximos:',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
@@ -205,6 +221,28 @@ class InicioPage extends StatelessWidget {
                           ),
                         );
                       },
+                    ),
+                  ),
+                  const SizedBox(height: 30),
+                  Center(
+                    child: Column(
+                      children: [
+                        Image.asset(
+                          'assets/icono.png',
+                          width: 80,
+                          height: 80,
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          "Meter frase a elegir",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                      ],
                     ),
                   ),
                 ],
