@@ -25,6 +25,9 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
       ),
       home: const MyHomePage(title: 'CDE AMISTAD'),
+      routes: {
+        '/noticias': (context) => const NoticiasPage(),
+      },
     );
   }
 }

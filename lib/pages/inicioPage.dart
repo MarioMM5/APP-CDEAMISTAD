@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:cde_amistad/entity/noticiaEntity.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
+import 'package:cde_amistad/pages/noticiasPage.dart';
+
+
+
 
 class InicioPage extends StatefulWidget {
   const InicioPage({Key? key}) : super(key: key);
@@ -98,13 +102,13 @@ class _InicioPageState extends State<InicioPage> {
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 10),
-                ...noticias.map((noticia) {
+                ...noticias.take(3).map((noticia) {
                   final fecha = DateTime.parse(noticia['fecha']);
                   return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    elevation: 4,
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    elevation: 2,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: ListTile(
                       onTap: () {
@@ -121,29 +125,70 @@ class _InicioPageState extends State<InicioPage> {
                         );
                       },
                       leading: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
+                        borderRadius: BorderRadius.circular(6),
                         child: Image.network(
                           noticia['imagen'],
-                          width: 70,
-                          height: 70,
+                          width: 50,
+                          height: 50,
                           fit: BoxFit.cover,
                         ),
                       ),
                       title: Text(
                         noticia['titulo'],
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
                       ),
-                      subtitle: Text(
-                        '📅 ${fecha.day}/${fecha.month}/${fecha.year}',
-                        style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black54,
-                            fontStyle: FontStyle.italic),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            noticia['descripcion'] ?? '',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          const SizedBox(height: 4),
+                          Text(
+                            '📅 ${fecha.day}/${fecha.month}/${fecha.year}',
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Colors.black54,
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ],
                       ),
-                      trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+                      trailing: const Icon(Icons.arrow_forward_ios, size: 14),
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     ),
+
                   );
+
+
+
                 }).toList(),
+                const SizedBox(height: 10),
+
+                Center(
+                  child: ElevatedButton.icon(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green[700],
+                      foregroundColor: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/noticias');
+                    },
+                    icon: Icon(Icons.arrow_forward),
+                    label: Text('Ver todas las noticias'),
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+
+
+
+
 
                 const SizedBox(height: 30),
                 const Text(
@@ -152,7 +197,6 @@ class _InicioPageState extends State<InicioPage> {
                 ),
                 const SizedBox(height: 10),
 
-                // 🎯 EVENTOS MOCK
                 SizedBox(
                   height: 130,
                   child: ListView.builder(
