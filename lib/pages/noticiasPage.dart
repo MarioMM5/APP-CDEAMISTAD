@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:cde_amistad/entity/noticiaEntity.dart';
 import 'package:cde_amistad/widget/noticia_card.dart';
 import 'package:cde_amistad/widget/noticias_detail.dart';
 

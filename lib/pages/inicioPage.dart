@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:cde_amistad/entity/noticiaEntity.dart';
 import 'package:add_2_calendar/add_2_calendar.dart';
-import 'package:cde_amistad/pages/noticiasPage.dart';
+
 
 
 
