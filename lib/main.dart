@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:cde_amistad/pages/partidosPage.dart';
 import 'package:cde_amistad/pages/inicioPage.dart';
 import 'package:cde_amistad/pages/noticiasPage.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: 'https://sbbddlhuflacpqnrvpyb.supabase.co',
+    anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNiYmRkbGh1ZmxhY3BxbnJ2cHliIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDYxMjUxNzAsImV4cCI6MjA2MTcwMTE3MH0.ZGvT8pasYJoW-2nLfoRyH5gqCsy9c218Cqkoz0XUxtU',
+  );
   runApp(const MyApp());
 }
 
